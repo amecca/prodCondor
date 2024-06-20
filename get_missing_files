@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+
+outfile=missing_files
+printf "" > $outfile
+logs=$(find . -maxdepth 3 -type d -name "*Chunk*" | sed "s:$:/log.txt.gz:g")
+zgrep -hs --binary-files=text "Failed to open the file" $logs | grep -oP "/store.+\.root" >> $outfile
+
+printf 'INFO: results in "%s"\n' $outfile

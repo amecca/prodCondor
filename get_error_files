@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+outfile=error_files
+printf "" > $outfile
+for chunk in $(find . -maxdepth 3 -type d -name "*Chunk*") ; do
+    # printf "CHUNK: %s -> " $chunk
+    [ -f $chunk/exitStatus.txt ] && [ $(cat $chunk/exitStatus.txt) = 85 ] && \
+	zgrep -oP --binary-files=text "/store.+\.root" $chunk/log.txt.gz | head -n1 >> $outfile
+done
+
+printf 'INFO: results in "%s"\n' $outfile
