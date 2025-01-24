@@ -29,7 +29,7 @@ def parse_args():
 
 
 def main(args):
-    logging.info('args: %s', args)
+    logging.debug('args: %s', args)
     ok = True
     for sample in args.samples:
         status = change_job_flavour(sample, action=args.action)
@@ -66,9 +66,10 @@ def set_job_flavour(sample, newflavour):
     '''
     Set job flavour for all the jobs of a sample, since they share the condor.sub
     '''
+    logging.info('setting flavour of "%s" to %s', sample, newflavour)
     condorsub = os.path.join(sample, 'condor.sub')
     cmd = ['sed', '-i', '-r', 's/(JobFlavour\s+= ")[^"]+/\\1%s/' %(newflavour), condorsub]
-    logging.info('+ %s', ' '.join("'"+w+"'" for w in cmd))
+    logging.debug('+ %s', ' '.join("'"+w+"'" for w in cmd))
     check_call(cmd, **_popen_extra_args)
 
 
