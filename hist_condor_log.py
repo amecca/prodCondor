@@ -20,11 +20,7 @@ job_flavours = {
     'nextweek'    : timedelta(weeks=1   ),
 }
 
-def main():
-    args = parse_args()
-    loglevel = args.loglevel.upper() if not args.loglevel.isdigit() else int(args.loglevel)
-    logging.basicConfig(format='%(levelname)s:%(module)s:%(funcName)s: %(message)s', level=loglevel)
-
+def main(args):
     # Get times from file or stdin
     times = get_times(args.fname)
     if(len(times) == 0):
@@ -101,4 +97,8 @@ def get_times(fname):
 
 
 if __name__ == '__main__':
-    exit(main())
+    args = parse_args()
+    loglevel = args.loglevel.upper() if not args.loglevel.isdigit() else int(args.loglevel)
+    logging.basicConfig(format='%(levelname)s:%(module)s:%(funcName)s: %(message)s', level=loglevel)
+
+    exit(main(args))
